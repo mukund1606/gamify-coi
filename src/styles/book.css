@@ -1,0 +1,25 @@
+.book {
+  transform-style: preserve-3d;
+  transform: perspective(2000px);
+}
+
+.container {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.book:hover {
+  z-index: 1;
+  transform: perspective(2000px);
+  box-shadow: inset 10px 0 50px rgba(0, 0, 0, 0.5);
+}
+
+.book .cover {
+  transform-origin: left;
+  transition: 1s;
+}
+
+.book:hover .cover {
+  transform: rotateY(-135deg);
+}
