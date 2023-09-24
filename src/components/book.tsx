@@ -2,6 +2,8 @@
 import "@/styles/book.css";
 
 import { useState } from "react";
+import useWindowSize from "react-use/lib/useWindowSize";
+import Confetti from "react-confetti";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
@@ -13,6 +15,7 @@ import $ from "jquery";
 import Image from "next/image";
 
 export default function Book() {
+  const { width, height } = useWindowSize();
   const [isPlayClicked, setIsPlayClicked] = useState(false);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(1);
@@ -83,6 +86,8 @@ export default function Book() {
     nextBtn.css("transform", "translateX(0px)");
   }
 
+  const [isFinished, setIsFinished] = useState(false);
+
   function goNextPage() {
     if (currentLocation < maxLocation) {
       const paper = $("#p" + currentLocation);
@@ -94,6 +99,7 @@ export default function Book() {
         paper.css("z-index", numberOfPages);
         paper.addClass("flipped");
         closeBook(false);
+        setIsFinished(true);
       } else {
         paper.css("z-index", currentLocation);
         paper.addClass("flipped");
@@ -102,28 +108,31 @@ export default function Book() {
     setCurrentLocation(currentLocation + 1);
   }
 
-  function goPrevPage() {
-    console.log(currentLocation);
-    if (currentLocation > 1) {
-      const paper = $("#p" + (currentLocation - 1));
-      if (currentLocation === 2) {
-        closeBook(true);
-        paper.css("z-index", numberOfPages);
-        paper.removeClass("flipped");
-      } else if (currentLocation === numberOfPages + 1) {
-        paper.css("z-index", "1");
-        paper.removeClass("flipped");
-        openBook();
-      } else {
-        paper.css("z-index", currentLocation - 1);
-        paper.removeClass("flipped");
-      }
-      setCurrentLocation(currentLocation - 1);
-    }
-  }
+  // function goPrevPage() {
+  //   console.log(currentLocation);
+  //   if (currentLocation > 1) {
+  //     const paper = $("#p" + (currentLocation - 1));
+  //     if (currentLocation === 2) {
+  //       closeBook(true);
+  //       paper.css("z-index", numberOfPages);
+  //       paper.removeClass("flipped");
+  //     } else if (currentLocation === numberOfPages + 1) {
+  //       paper.css("z-index", "1");
+  //       paper.removeClass("flipped");
+  //       openBook();
+  //     } else {
+  //       paper.css("z-index", currentLocation - 1);
+  //       paper.removeClass("flipped");
+  //     }
+  //     setCurrentLocation(currentLocation - 1);
+  //   }
+  // }
 
   return (
     <>
+      {score / numberOfPages > 0.5 && isFinished && (
+        <Confetti width={width} height={height} />
+      )}
       <AnimatePresence>
         {!isGameStarted && (
           <motion.div
@@ -145,7 +154,10 @@ export default function Book() {
                   />
                 </div>
                 {!isPlayClicked ? (
-                  <div className="details absolute border top-0 w-full h-full flex items-center justify-center">
+                  <div className="details absolute border top-0 w-full h-full flex flex-col gap-2 items-center justify-center">
+                    <h1 className="text-3xl font-bold text-center">
+                      Constitution of India, Click Play to Start
+                    </h1>
                     <Button
                       onClick={() => setIsPlayClicked(true)}
                       className="text-3xl h-fit"
@@ -311,6 +323,14 @@ export default function Book() {
                               <h1 className="text-6xl font-bold text-center">
                                 You scored {score} out of {numberOfPages - 1}
                               </h1>
+                              <Button
+                                onClick={() => {
+                                  window.location.reload();
+                                }}
+                                className="text-2xl h-fit"
+                              >
+                                Play Again
+                              </Button>
                             </>
                           )}
                         </div>
