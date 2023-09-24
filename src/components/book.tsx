@@ -99,7 +99,6 @@ export default function Book() {
         paper.css("z-index", numberOfPages);
         paper.addClass("flipped");
         closeBook(false);
-        setIsFinished(true);
       } else {
         paper.css("z-index", currentLocation);
         paper.addClass("flipped");
@@ -130,7 +129,7 @@ export default function Book() {
 
   return (
     <>
-      {score / numberOfPages > 0.5 && isFinished && (
+      {score / (numberOfPages - 1) >= 0.5 && isFinished && (
         <Confetti width={width} height={height} />
       )}
       <AnimatePresence>
@@ -278,6 +277,10 @@ export default function Book() {
                                           setScore(score + 1);
                                         }
                                         goNextPage();
+                                        if (index === numberOfPages - 1) {
+                                          console.log("finished");
+                                          setIsFinished(true);
+                                        }
                                       }}
                                       className="text-2xl h-fit"
                                     >
@@ -302,6 +305,12 @@ export default function Book() {
                               <h1 className="text-6xl font-bold text-center">
                                 {"Question " + (index + 1)}
                               </h1>
+                              <p className="text-2xl text-center">
+                                <span className="font-bold">
+                                  Article Number:{" "}
+                                </span>
+                                {randomArticles[index].article}
+                              </p>
                               <p className="text-2xl text-center">
                                 <span className="font-bold">
                                   Article Title:{" "}
