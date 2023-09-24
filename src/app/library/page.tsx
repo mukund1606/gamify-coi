@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 import data from "@/data/articlesData.json";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
