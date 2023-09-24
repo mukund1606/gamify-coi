@@ -305,12 +305,12 @@ export default function Book() {
                               <h1 className="text-6xl font-bold text-center">
                                 {"Question " + (index + 1)}
                               </h1>
-                              <p className="text-2xl text-center">
+                              {/* <p className="text-2xl text-center">
                                 <span className="font-bold">
                                   Article Number:{" "}
                                 </span>
                                 {randomArticles[index].article}
-                              </p>
+                              </p> */}
                               <p className="text-2xl text-center">
                                 <span className="font-bold">
                                   Article Title:{" "}
